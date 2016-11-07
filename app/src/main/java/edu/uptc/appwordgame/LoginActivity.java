@@ -53,10 +53,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView linkSingup;
 
 
-    public LoginActivity() {
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -82,7 +78,10 @@ public class LoginActivity extends AppCompatActivity {
         linkSingup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: HACER ACTIVITY DE CREACION DE USUARIO
+                Intent intent =  new Intent(getApplicationContext(),SingupActivity.class);
+                startActivityForResult(intent,REQUEST_SINGUP);
+                // finish();
+                overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
             }
         });
 
