@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -97,7 +98,24 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setEnabled(false);
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Autenticando...");
+        progressDialog.show();
 
+        String user = txtUser.getText().toString();
+        String pass = txtPassword.getText().toString();
+
+        // TODO: HACER LOGICA DEL LOGIN
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // On complete call either onLoginSuccess or onLoginFailed
+                        onLoginSuccess();
+                        // onLoginFailed();
+                        progressDialog.dismiss();
+                    }
+                }, 3000);
     }
 
     @Override
@@ -114,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSucces(){
+    public void onLoginSuccess(){
         btnLogin.setEnabled(true);
         finish();
     }
