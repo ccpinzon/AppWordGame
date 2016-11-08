@@ -27,6 +27,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -35,6 +36,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     testCompile 'junit:junit:4.12'
 
     compile project(':mysql-connector')

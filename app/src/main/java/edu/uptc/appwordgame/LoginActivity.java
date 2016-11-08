@@ -2,6 +2,7 @@ package edu.uptc.appwordgame;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.icu.lang.UScript;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,11 +16,17 @@ import android.widget.Toast;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.uptc.appwordgame.Logic.HaldingUsers;
 import edu.uptc.appwordgame.Logic.User;
+import edu.uptc.appwordgame.Persistence.ConnectionCloud;
+import edu.uptc.appwordgame.Persistence.DatabaseAccess;
 
 /**
  * A login screen that offers login via email/password.
@@ -28,26 +35,26 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "PruebaLoginActivity";
     private static final int REQUEST_SINGUP = 0;
 
-    private HaldingUsers haldingUsers;
+
 
     private EditText txtUser;
     private EditText txtPassword;
     private Button btnLogin;
     private TextView linkSingup;
 
+    private DatabaseAccess databaseAccess;
+    private List<User> users;
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        try {
-            haldingUsers = new HaldingUsers();
-        } catch (SQLException e) {
-            Log.d(TAG,"Error sql " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            Log.d(TAG,"Error sql 2 " + e.getMessage());
-        }
+
         setContentView(R.layout.activity_login);
+        databaseAccess = DatabaseAccess.getInstance(this);
+        users = databaseAccess.getUsers();
+
+
         beginComponents();
         super.onCreate(savedInstanceState);
     }
@@ -61,6 +68,13 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    probarConexion();
+                } catch (SQLException e) {
+                    Log.d(TAG,e.getMessage());
+                } catch (ClassNotFoundException e) {
+                    Log.d(TAG,e.getMessage());
+                }
                 login();
             }
         });
@@ -76,6 +90,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void probarConexion() throws SQLException, ClassNotFoundException {
+        ConnectionCloud c = new ConnectionCloud();
+
+        Connection con = c.obtener();
+
+        if (con!= null){
+            Log.d(TAG,"Conexion esablecida");
+        }else{
+            Log.d(TAG,"Conexion erronea");
+        }
+
+        PreparedStatement st = con.prepareStatement("SELECT * FROM USER");
+
+        ResultSet rs = st.executeQuery();
+        String name = "";
+        while(rs.next()){
+            name = rs.getString("password");
+            Log.d(TAG,name);
+        }
     }
 
     private void login() {
@@ -98,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: HACER LOGICA DEL LOGIN
 
 
-        Log.d(TAG,haldingUsers.findUser(user).toString());
+
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
