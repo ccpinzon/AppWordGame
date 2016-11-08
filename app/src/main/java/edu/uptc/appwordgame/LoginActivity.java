@@ -1,51 +1,34 @@
 package edu.uptc.appwordgame;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import static android.Manifest.permission.READ_CONTACTS;
+
+import edu.uptc.appwordgame.Logic.HaldingUsers;
+import edu.uptc.appwordgame.Logic.User;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "PruebaLoginActivity";
     private static final int REQUEST_SINGUP = 0;
 
+    private HaldingUsers haldingUsers;
 
     private EditText txtUser;
     private EditText txtPassword;
@@ -53,9 +36,17 @@ public class LoginActivity extends AppCompatActivity {
     private TextView linkSingup;
 
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        try {
+            haldingUsers = new HaldingUsers();
+        } catch (SQLException e) {
+            Log.d(TAG,"Error sql " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            Log.d(TAG,"Error sql 2 " + e.getMessage());
+        }
         setContentView(R.layout.activity_login);
         beginComponents();
         super.onCreate(savedInstanceState);
@@ -106,6 +97,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO: HACER LOGICA DEL LOGIN
 
+
+        Log.d(TAG,haldingUsers.findUser(user).toString());
+
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -116,7 +110,38 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }, 3000);
     }
+//
+//    private boolean validateUser(String nickName,String pass) throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
+//        String md5Pass = generateMD5(pass);
+//
+//        HaldingUsers haldingUsers = new HaldingUsers();
+//        ArrayList<User> usuarios =  haldingUsers.getUsers();
+//        Log.d(TAG,haldingUsers.findUser(nickName).toString());
+//        Toast.makeText(getBaseContext(),haldingUsers.findUser("tolo").toString(),Toast.LENGTH_LONG).show();
+//
+////        if (user!=null && user.getPassword().equals(md5Pass)){
+////            Toast.makeText(getBaseContext(),"Logueado!!",Toast.LENGTH_LONG).show();
+////            return true;
+////        }else{
+////            Toast.makeText(getBaseContext(),"Error al loguearse",Toast.LENGTH_LONG).show();
+////            return false;
+////        }
+//        return true;
+//    }
 
+    public String generateMD5(String text) throws NoSuchAlgorithmException {
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.reset();
+        m.update(text.getBytes());
+        byte[] digest = m.digest();
+        BigInteger bigInt = new BigInteger(1,digest);
+        String hashtext = bigInt.toString(16);
+
+        while(hashtext.length() < 32 ){
+            hashtext = "0"+hashtext;
+        }
+        return hashtext;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SINGUP) {
@@ -165,4 +190,3 @@ public class LoginActivity extends AppCompatActivity {
 
 
 }
-
