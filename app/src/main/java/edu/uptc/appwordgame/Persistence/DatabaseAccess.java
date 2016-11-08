@@ -20,6 +20,7 @@ public class DatabaseAccess {
 
     private static  DatabaseAccess instance;
 
+
     public DatabaseAccess(Context context) {
         this.openHelper = new DBOpenHelper(context);
     }
