@@ -161,6 +161,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess(){
         btnLogin.setEnabled(true);
         // TODO: LLEVA A LA ACTIVITY DEL JUEGO
+        Intent intent = new Intent(getApplicationContext(),GameActivity.class);
+        startActivity(intent);
         finish();
     }
     public void onLoginFailed(){

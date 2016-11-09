@@ -3,11 +3,10 @@
     package="edu.uptc.appwordgame">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
 
     <application
         android:allowBackup="true"
@@ -27,7 +26,8 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".SingupActivity"></activity>
+        <activity android:name=".SingupActivity" />
+        <activity android:name=".GameActivity"></activity>
     </application>
 
 </manifest>

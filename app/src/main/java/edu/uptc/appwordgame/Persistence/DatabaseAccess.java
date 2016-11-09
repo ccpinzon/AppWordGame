@@ -70,6 +70,18 @@ public class DatabaseAccess {
         return list;
     }
 
+    public ArrayList<String> getWords(){
+        ArrayList<String> words  = new ArrayList<>();
+        Cursor cursor =  database.rawQuery("SELECT sin_acentos FROM palabras",null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            String word = cursor.getString(0);
+            words.add(word);
+            cursor.moveToNext();
+        }
+        return words;
+    }
+
     public void addUser(User user){
         if (user!=null) {
             ContentValues values = new ContentValues();
