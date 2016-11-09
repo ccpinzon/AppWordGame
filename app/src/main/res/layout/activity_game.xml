@@ -3,66 +3,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context="edu.uptc.appwordgame.GameActivity">
 
-    <ImageView android:src="@drawable/logo2"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
-        android:layout_gravity="center_horizontal" />
+        android:src="@drawable/logo2" />
 
     <TextView
         android:id="@+id/labelLetras"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="50dp"
         android:text="X X X X"
         android:textAlignment="center"
-        android:layout_marginTop="50dp"
-        android:textSize="60dp"
-        android:layout_width="match_parent"
-        android:layout_height="120dp" />
+        android:textSize="60dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/labelLetras2"
-            android:text="A B "
-            android:textAlignment="center"
-            android:textSize="60dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/labelLetras3"
-            android:text="C D "
-            android:textAlignment="center"
-            android:textSize="60dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn0_lvlEasy"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:text="A"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:id="@+id/btn1_lvlEasy"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="B"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:id="@+id/btn2_lvlEasy"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="C"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg" />
+        <Button
+            android:id="@+id/btn3_lvlEasy"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="C"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/labelLetras2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="A B "-->
+            <!--android:textAlignment="center"-->
+            <!--android:textSize="60dp" />-->
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/labelLetras3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="C D "-->
+            <!--android:textAlignment="center"-->
+            <!--android:textSize="60dp" />-->
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <Button
-            android:src="@drawable/error"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="70dp"
-            />
-        <Button
-            android:src="@drawable/ok"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/error" />
+
+        <Space
+            android:layout_width="45dp"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/btnFine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            />
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ok" />
 
     </LinearLayout>
 
