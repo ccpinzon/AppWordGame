@@ -111,7 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                         // On complete call either onLoginSuccess or onLoginFailed
                        // onLoginSuccess();
                         // onLoginFailed();
-                        if (findUser(user)!=null &&  findUser(user).getPassword().equals(pass)) {
+
+                        if (findUser(user)!=null &&  findUser(user).getPassword().equals(generateMD5(pass))) {
                             Toast.makeText(getBaseContext(),"Usuario y contraseña correctos",Toast.LENGTH_LONG).show();
 
                             onLoginSuccess();
@@ -125,8 +126,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public String generateMD5(String text) throws NoSuchAlgorithmException {
-        MessageDigest m = MessageDigest.getInstance("MD5");
+    public String generateMD5(String text) {
+        MessageDigest m = null;
+        try {
+            m = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         m.reset();
         m.update(text.getBytes());
         byte[] digest = m.digest();

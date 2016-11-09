@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import edu.uptc.appwordgame.Logic.User;
@@ -95,7 +98,7 @@ public class SingupActivity extends AppCompatActivity {
                         if(findUser(user)!=null){
                             onSingupFailed();
                         }else {
-                            databaseAccess.addUser(new User(null,name,user,pass,""));
+                            databaseAccess.addUser(new User(null,name,user,generateMD5(pass),""));
                             users.removeAll(users);
                             loadUsers();
                             onSingupSuccess();
@@ -180,5 +183,25 @@ public class SingupActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    //md5generate
+    public String generateMD5(String text)  {
+        MessageDigest m = null;
+        try {
+            m = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        m.reset();
+        m.update(text.getBytes());
+        byte[] digest = m.digest();
+        BigInteger bigInt = new BigInteger(1,digest);
+        String hashtext = bigInt.toString(16);
+
+        while(hashtext.length() < 32 ){
+            hashtext = "0"+hashtext;
+        }
+        return hashtext;
     }
 }
