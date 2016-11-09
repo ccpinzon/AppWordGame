@@ -12,6 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
+import java.util.ArrayList;
+
+import edu.uptc.appwordgame.Logic.User;
+import edu.uptc.appwordgame.Persistence.DatabaseAccess;
+
 public class SingupActivity extends AppCompatActivity {
     private static final String TAG = "SingupActivity";
 
@@ -22,13 +27,18 @@ public class SingupActivity extends AppCompatActivity {
     private Button _btnSingup;
     private TextView _loginLink;
 
+    private ArrayList<User> users;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_singup);
         beginComponents();
         super.onCreate(savedInstanceState);
+        loadUsers();
 
     }
+
+
 
     private void beginComponents() {
         _txtName = (EditText) findViewById(R.id.input_name);
@@ -77,22 +87,31 @@ public class SingupActivity extends AppCompatActivity {
 
         // TODO: LOGIA DE CREACIONDE CUENTAS
 
+        DatabaseAccess databaseAccess = new DatabaseAccess(this);
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSingupSuccess();
-                        // onSignupFailed();
+                        databaseAccess.open();
+                        if(findUser(user)!=null){
+                            onSingupFailed();
+                        }else {
+                            databaseAccess.addUser(new User(null,name,user,pass,""));
+                            users.removeAll(users);
+                            loadUsers();
+                            onSingupSuccess();
+                        }
                         progressDialog.dismiss();
                     }
                 }, 3000);
+
+
+
 
     }
     public void onSingupSuccess(){
         _btnSingup.setEnabled(true);
         setResult(RESULT_OK,null);
-        finish();
+        this.finish();
     }
     public void onSingupFailed(){
         Toast.makeText(getBaseContext(), "Error al crear Cuenta", Toast.LENGTH_LONG).show();
@@ -144,5 +163,22 @@ public class SingupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    //bd methods
+
+    private void loadUsers() {
+        DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        databaseAccess.open();
+        users = (ArrayList<User>) databaseAccess.getUsers();
+        databaseAccess.close();
+    }
+    public User findUser(String nickname){
+        for (User user:users ) {
+            if (user.getNickName().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

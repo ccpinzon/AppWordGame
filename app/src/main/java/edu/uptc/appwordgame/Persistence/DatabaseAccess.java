@@ -1,9 +1,11 @@
 package edu.uptc.appwordgame.Persistence;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import edu.uptc.appwordgame.Logic.User;
  */
 
 public class DatabaseAccess {
+    public static final String TAG = "PRUEBA_DATABASEACCESS";
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
 
@@ -65,5 +68,19 @@ public class DatabaseAccess {
         }
         cursor.close();
         return list;
+    }
+
+    public void addUser(User user){
+        if (user!=null) {
+            ContentValues values = new ContentValues();
+            values.put("name", user.getName());
+            values.put("nickname", user.getNickName());
+            values.put("password", user.getPassword());
+            values.put("email", user.getEmail());
+            database.insert("USER", null, values);
+            database.close();
+        }else {
+            Log.d(TAG,"Error al agregar usuario");
+        }
     }
 }
