@@ -3,20 +3,12 @@ package edu.uptc.appwordgame;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.uptc.appwordgame.Logic.HaldingUsers;
 import edu.uptc.appwordgame.Logic.User;
-import edu.uptc.appwordgame.Persistence.ConnectionCloud;
-import edu.uptc.appwordgame.Persistence.DatabaseAccess;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

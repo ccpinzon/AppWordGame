@@ -2,12 +2,12 @@ package edu.uptc.appwordgame;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.icu.lang.UScript;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,11 +21,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.uptc.appwordgame.Logic.HaldingUsers;
 import edu.uptc.appwordgame.Logic.User;
-import edu.uptc.appwordgame.Persistence.ConnectionCloud;
 import edu.uptc.appwordgame.Persistence.DatabaseAccess;
 
 /**
@@ -42,8 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView linkSingup;
 
-    private DatabaseAccess databaseAccess;
-    private List<User> users;
+
+    private ArrayList<User> users;
+
 
 
 
@@ -51,13 +49,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.activity_login);
-        databaseAccess = DatabaseAccess.getInstance(this);
-        users = databaseAccess.getUsers();
-
-
         beginComponents();
         super.onCreate(savedInstanceState);
+
+        loadUsers();
     }
+
+
 
     private void beginComponents() {
 
@@ -68,13 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    probarConexion();
-                } catch (SQLException e) {
-                    Log.d(TAG,e.getMessage());
-                } catch (ClassNotFoundException e) {
-                    Log.d(TAG,e.getMessage());
-                }
+
                 login();
             }
         });
@@ -92,26 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void probarConexion() throws SQLException, ClassNotFoundException {
-        ConnectionCloud c = new ConnectionCloud();
 
-        Connection con = c.obtener();
-
-        if (con!= null){
-            Log.d(TAG,"Conexion esablecida");
-        }else{
-            Log.d(TAG,"Conexion erronea");
-        }
-
-        PreparedStatement st = con.prepareStatement("SELECT * FROM USER");
-
-        ResultSet rs = st.executeQuery();
-        String name = "";
-        while(rs.next()){
-            name = rs.getString("password");
-            Log.d(TAG,name);
-        }
-    }
 
     private void login() {
         Log.d(TAG,"LOGIN");
@@ -132,37 +105,25 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO: HACER LOGICA DEL LOGIN
 
-
-
-
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
+                       // onLoginSuccess();
                         // onLoginFailed();
+                        if (findUser(user)!=null &&  findUser(user).getPassword().equals(pass)) {
+                            Toast.makeText(getBaseContext(),"Usuario y contraseña correctos",Toast.LENGTH_LONG).show();
+
+                            onLoginSuccess();
+                        }else {
+                            onLoginFailed();
+                        }
                         progressDialog.dismiss();
                     }
                 }, 3000);
+
+
     }
-//
-//    private boolean validateUser(String nickName,String pass) throws NoSuchAlgorithmException, SQLException, ClassNotFoundException {
-//        String md5Pass = generateMD5(pass);
-//
-//        HaldingUsers haldingUsers = new HaldingUsers();
-//        ArrayList<User> usuarios =  haldingUsers.getUsers();
-//        Log.d(TAG,haldingUsers.findUser(nickName).toString());
-//        Toast.makeText(getBaseContext(),haldingUsers.findUser("tolo").toString(),Toast.LENGTH_LONG).show();
-//
-////        if (user!=null && user.getPassword().equals(md5Pass)){
-////            Toast.makeText(getBaseContext(),"Logueado!!",Toast.LENGTH_LONG).show();
-////            return true;
-////        }else{
-////            Toast.makeText(getBaseContext(),"Error al loguearse",Toast.LENGTH_LONG).show();
-////            return false;
-////        }
-//        return true;
-//    }
 
     public String generateMD5(String text) throws NoSuchAlgorithmException {
         MessageDigest m = MessageDigest.getInstance("MD5");
@@ -188,11 +149,12 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        moveTaskToBack(false);
     }
 
     public void onLoginSuccess(){
         btnLogin.setEnabled(true);
+        // TODO: LLEVA A LA ACTIVITY DEL JUEGO
         finish();
     }
     public void onLoginFailed(){
@@ -224,4 +186,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    //bd ,methods
+
+    private void loadUsers() {
+        DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        databaseAccess.open();
+        users = (ArrayList<User>) databaseAccess.getUsers();
+        databaseAccess.close();
+    }
+
+    public User findUser(String nickname){
+        for (User user:users ) {
+            if (user.getNickName().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
