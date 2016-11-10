@@ -1,1 +1,1 @@
-include ':app', ':mysql-connector'
+include ':app'

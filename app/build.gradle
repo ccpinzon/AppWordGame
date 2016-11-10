@@ -38,6 +38,4 @@ dependencies {
     compile 'com.android.support:design:25.0.0'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     testCompile 'junit:junit:4.12'
-
-    compile project(':mysql-connector')
 }
