@@ -83,14 +83,15 @@ public class SingupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creando Cuenta...");
         progressDialog.show();
 
-        String name = _txtName.getText().toString();
-        String user = _txtUser.getText().toString();
-        String pass = _txtPass.getText().toString();
+        final String name = _txtName.getText().toString();
+        final String user = _txtUser.getText().toString();
+        final String pass = _txtPass.getText().toString();
         String rePass = _txtReEnterPass.getText().toString();
 
         // TODO: LOGIA DE CREACIONDE CUENTAS
 
-        DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        //DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        final DatabaseAccess databaseAccess = new DatabaseAccess(this);
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {

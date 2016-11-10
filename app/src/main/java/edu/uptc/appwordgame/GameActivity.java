@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.SecureRandom;
@@ -17,10 +18,12 @@ import edu.uptc.appwordgame.Persistence.DatabaseAccess;
 public class GameActivity extends AppCompatActivity {
     private ArrayList<String> words;
     private ImageButton _btnFine;
+    private ImageButton _btnError;
     private Button _btn0;
     private Button _btn1;
     private Button _btn2;
     private Button _btn3;
+    private TextView _labelLetras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,27 +40,102 @@ public class GameActivity extends AppCompatActivity {
         _btn1 = (Button) findViewById(R.id.btn1_lvlEasy);
         _btn2 = (Button) findViewById(R.id.btn2_lvlEasy);
         _btn3 = (Button) findViewById(R.id.btn3_lvlEasy);
+        _labelLetras = (TextView) findViewById(R.id.labelLetras);
 
         //palabra aleatoria
         String word = randomWordBd(4);
         Log.d("RANDMON",word);
-        _btn0.setText(word.substring(2,3));
-        _btn1.setText(word.substring(3,4));
-        _btn2.setText(word.substring(0,1));
-        _btn3.setText(word.substring(1,2));
+
+        String char0 = word.substring(2,3);
+        String char1 = word.substring(3,4);
+        String char2 = word.substring(0,1);
+        String char3 = word.substring(1,2);
+
+
+        ArrayList<String> juego =  new ArrayList<>();
+        _btn0.setText(char0);
+        _btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                juego.add(char0);
+                _labelLetras.setText(arrayToString(juego));
+                _btn0.setEnabled(false);
+            }
+        });
+        _btn1.setText(char1);
+        _btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                juego.add(char1);
+                _labelLetras.setText(arrayToString(juego));
+                _btn1.setEnabled(false);
+            }
+        });
+        _btn2.setText(char2);
+        _btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                juego.add(char2);
+                _labelLetras.setText(arrayToString(juego));
+                _btn2.setEnabled(false);
+            }
+        });
+        _btn3.setText(char3);
+        _btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                juego.add(char3);
+                _labelLetras.setText(arrayToString(juego));
+                _btn3.setEnabled(false);
+            }
+        });
+
 
 
         _btnFine = (ImageButton) findViewById(R.id.btnFine);
         _btnFine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (wordExists("ajhsdjshdbf2")){
-                    Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_LONG).show();
+                String word = cutSpaces(_labelLetras.getText().toString());
+                if (wordExists(word)){
+                    Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getBaseContext(), "No existe!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "No existe!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        _btnError = (ImageButton) findViewById(R.id.btnError);
+        _btnError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                juego.removeAll(juego);
+                _labelLetras.setText("");
+
+                _btn0.setEnabled(true);
+                _btn1.setEnabled(true);
+                _btn2.setEnabled(true);
+                _btn3.setEnabled(true);
+
+            }
+        });
+    }
+
+    public String cutSpaces(String word){
+        String[] letters = word.split(" ");
+        String out = "";
+        for (String letter:letters){
+            out = out + letter;
+        }
+        return out;
+    }
+
+    public String arrayToString(ArrayList<String> arrayLetras){
+        String out = "";
+        for (String letra: arrayLetras) {
+            out = out + letra + " ";
+        }
+        return out;
     }
 
     public String randomWord(int len){

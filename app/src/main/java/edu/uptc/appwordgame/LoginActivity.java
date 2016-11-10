@@ -32,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "PruebaLoginActivity";
     private static final int REQUEST_SINGUP = 0;
 
-
-
     private EditText txtUser;
     private EditText txtPassword;
     private Button btnLogin;
@@ -41,9 +39,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private ArrayList<User> users;
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

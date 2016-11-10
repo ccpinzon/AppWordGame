@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginTop="50dp"
-        android:text="X X X X"
         android:textAlignment="center"
         android:textSize="60dp" />
 
@@ -85,30 +84,34 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:id="@+id/btnError"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="20dp"
             android:src="@drawable/error" />
 
+
         <Space
-            android:layout_width="45dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/btnFine"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
+            android:scaleType="fitStart"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/ok" />
 
     </LinearLayout>
