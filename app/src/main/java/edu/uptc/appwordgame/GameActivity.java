@@ -19,6 +19,7 @@ import edu.uptc.appwordgame.Persistence.DatabaseAccess;
 
 public class GameActivity extends AppCompatActivity {
     private ArrayList<String> words;
+    private ArrayList<String> currentPlayWords;
     private ImageButton _btnFine;
     private ImageButton _btnError;
     private Button _btn0;
@@ -33,7 +34,6 @@ public class GameActivity extends AppCompatActivity {
         loadWords();
         setContentView(R.layout.activity_game);
         beginComponents();
-
     }
 
     private void beginComponents() {
@@ -46,15 +46,15 @@ public class GameActivity extends AppCompatActivity {
 
         //palabra aleatoria
         String word = randomWordBd(4);
-        Log.d("RANDMON",word);
+        Log.d("RANDMON", word);
 
-        String char0 = word.substring(2,3);
-        String char1 = word.substring(3,4);
-        String char2 = word.substring(0,1);
-        String char3 = word.substring(1,2);
+        String char0 = word.substring(2, 3);
+        String char1 = word.substring(3, 4);
+        String char2 = word.substring(0, 1);
+        String char3 = word.substring(1, 2);
 
 
-        ArrayList<String> juego =  new ArrayList<>();
+        ArrayList<String> juego = new ArrayList<>();
         _btn0.setText(char0);
         _btn0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,30 +92,33 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-
         Vibrator v = (Vibrator) this.getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
 
-
         _btnFine = (ImageButton) findViewById(R.id.btnFine);
+        currentPlayWords = new ArrayList<String>();
         _btnFine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String word = cutSpaces(_labelLetras.getText().toString().toLowerCase());
-                if (wordExists(word)){
+                if (wordExists(word) && (!wordExistsCurrentPlay(word))) {
+                    currentPlayWords.add(word);
                     Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_SHORT).show();
                     _labelLetras.setText("");
-                }else{
+                } else if (wordExistsCurrentPlay(word)){
+                    Toast.makeText(getBaseContext(), "Ya agregada", Toast.LENGTH_SHORT).show();
+                    long[] pattern = { 100, 100,100, 100, 100};
+                    v.vibrate(pattern , -1);
+
+                    _labelLetras.setText("");
+                }
+                else {
                     Toast.makeText(getBaseContext(), "No existe!", Toast.LENGTH_SHORT).show();
                     v.vibrate(500);
                     _labelLetras.setText("");
                 }
                 _labelLetras.setText("");
                 juego.removeAll(juego);
-
-                _btn0.setEnabled(true);
-                _btn1.setEnabled(true);
-                _btn2.setEnabled(true);
-                _btn3.setEnabled(true);
+                enableButtons(true);
             }
         });
 
@@ -125,66 +128,69 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 juego.removeAll(juego);
                 _labelLetras.setText("");
-
-                _btn0.setEnabled(true);
-                _btn1.setEnabled(true);
-                _btn2.setEnabled(true);
-                _btn3.setEnabled(true);
-
+                enableButtons(true);
             }
         });
     }
 
-    public String cutSpaces(String word){
+
+    public void enableButtons(Boolean aBoolean) {
+        _btn0.setEnabled(aBoolean);
+        _btn1.setEnabled(aBoolean);
+        _btn2.setEnabled(aBoolean);
+        _btn3.setEnabled(aBoolean);
+    }
+
+    public String cutSpaces(String word) {
         String[] letters = word.split(" ");
         String out = "";
-        for (String letter:letters){
+        for (String letter : letters) {
             out = out + letter;
         }
         return out;
     }
 
-    public String arrayToString(ArrayList<String> arrayLetras){
+    public String arrayToString(ArrayList<String> arrayLetras) {
         String out = "";
-        for (String letra: arrayLetras) {
+        for (String letra : arrayLetras) {
             out = out + letra + " ";
         }
         return out;
     }
 
-    public String randomWord(int len){
-        String AB = "aaaaaaabbbbccccddddeeeeeeeeeefghiiiiiiijklmnññooooooooopqrrrrrrrrstuuuuuvwxyz";
-        SecureRandom rnd = new SecureRandom();
-        StringBuilder sb = new StringBuilder(len);
-        for( int i = 0; i < len; i++ )
-            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
-        return sb.toString();
-    }
-    public String randomWordBd(int len){
+    public String randomWordBd(int len) {
         ArrayList<String> wordsCuts = new ArrayList<>();
-        String randmonWord= "";
-        for (String word: words) {
-            if (word.length()==len){
+        String randmonWord = "";
+        for (String word : words) {
+            if (word.length() == len) {
                 wordsCuts.add(word);
             }
         }
         int lenWordCuts = wordsCuts.size();
         Random rn = new Random();
-        randmonWord = wordsCuts.get(rn.nextInt(lenWordCuts - 0 + 1) +0);
+        randmonWord = wordsCuts.get(rn.nextInt(lenWordCuts - 0 + 1) + 0);
         return randmonWord;
     }
 
 
-    public void loadWords(){
+    public void loadWords() {
         DatabaseAccess databaseAccess = new DatabaseAccess(this);
         databaseAccess.open();
         words = databaseAccess.getWords();
         databaseAccess.close();
     }
 
-    public boolean wordExists(String wordSearch){
-        for (String word:words) {
-            if(wordSearch.equals(word)){
+    public boolean wordExists(String wordSearch) {
+        for (String word : words) {
+            if (wordSearch.equals(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean wordExistsCurrentPlay(String wordSearch) {
+        for (String word : currentPlayWords) {
+            if (wordSearch.equals(word)) {
                 return true;
             }
         }
