@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -20,36 +22,61 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayList<User> users;
 
+    private Button _btnLogin;
+    private Button _btnSingUp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
+        beginComponents();
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this,LoginActivity.class);
+//        startActivity(intent);
 
-        this.listView = (ListView) findViewById(R.id.listView);
+        //this.listView = (ListView) findViewById(R.id.listView);
 
         //cargar usuarios al arreglo
-        loadUsers();
+        //loadUsers();
 
 
     }
 
+    private void beginComponents() {
+        _btnLogin = (Button) findViewById(R.id.btn_MainLogin);
+        _btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intentLogin);
+            }
+        });
+
+
+        _btnSingUp = (Button) findViewById(R.id.btn_MainSingUp);
+        _btnSingUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentSingUp = new Intent(getApplicationContext(), SingupActivity.class);
+                startActivity(intentSingUp);
+            }
+        });
+
+    }
+
     //metodos users!
-    public void loadUsers(){
+    public void loadUsers() {
         DatabaseAccess databaseAccess = new DatabaseAccess(this);
         databaseAccess.open();
         users = (ArrayList<User>) databaseAccess.getUsers();
         databaseAccess.close();
 
-        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,android.R.layout.simple_list_item_1,users);
+        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_list_item_1, users);
         this.listView.setAdapter(adapter);
     }
 
-    public User findUser(String nickname){
-        for (User user:users ) {
+    public User findUser(String nickname) {
+        for (User user : users) {
             if (user.getNickName().equals(nickname)) {
                 return user;
             }
@@ -69,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id= item.getItemId();
-        if (id == R.id.action_settings){
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);

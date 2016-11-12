@@ -88,9 +88,8 @@ public class SingupActivity extends AppCompatActivity {
         final String pass = _txtPass.getText().toString();
         String rePass = _txtReEnterPass.getText().toString();
 
-        // TODO: LOGIA DE CREACIONDE CUENTAS
 
-        //DatabaseAccess databaseAccess = new DatabaseAccess(this);
+
         final DatabaseAccess databaseAccess = new DatabaseAccess(this);
         new android.os.Handler().postDelayed(
                 new Runnable() {
