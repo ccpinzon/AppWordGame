@@ -9,14 +9,15 @@ public class User {
     private String name;
     private String nickName;
     private String password;
-    private String email;
+    private int score;
 
-    public User(String userId, String name, String nickName, String password, String email) {
+
+    public User(String userId, String name, String nickName, String password, int score) {
         this.userId = userId;
         this.name = name;
         this.nickName = nickName;
         this.password = password;
-        this.email = email;
+        this.score = score;
     }
 
     public String getUserId() {
@@ -51,12 +52,12 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public int getScore() {
+        return score;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setScore(int score) {
+        this.score = score;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
+                ", score=" + score +
                 '}';
     }
 }

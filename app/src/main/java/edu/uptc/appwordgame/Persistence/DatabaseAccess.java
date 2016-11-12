@@ -62,8 +62,8 @@ public class DatabaseAccess {
             String name = cursor.getString(1);
             String nickname = cursor.getString(2);
             String pass = cursor.getString(3);
-            String email = cursor.getString(4);
-            list.add(new User(userid,name,nickname,pass,email));
+            int score = cursor.getInt(4);
+            list.add(new User(userid,name,nickname,pass,score));
             cursor.moveToNext();
         }
         cursor.close();
@@ -88,7 +88,7 @@ public class DatabaseAccess {
             values.put("name", user.getName());
             values.put("nickname", user.getNickName());
             values.put("password", user.getPassword());
-            values.put("email", user.getEmail());
+            values.put("score", user.getScore());
             database.insert("USER", null, values);
             database.close();
         }else {

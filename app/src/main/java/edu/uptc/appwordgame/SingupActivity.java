@@ -38,10 +38,7 @@ public class SingupActivity extends AppCompatActivity {
         beginComponents();
         super.onCreate(savedInstanceState);
         loadUsers();
-
     }
-
-
 
     private void beginComponents() {
         _txtName = (EditText) findViewById(R.id.input_name);
@@ -61,24 +58,24 @@ public class SingupActivity extends AppCompatActivity {
         _loginLink.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
-                overridePendingTransition(R.anim.push_left_out,R.anim.push_left_in);
+                overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
             }
         });
     }
 
     private void singup() {
-        Log.d(TAG,"CREAR CUENTA");
+        Log.d(TAG, "CREAR CUENTA");
 
-        if (!validate()){
+        if (!validate()) {
             onSingupFailed();
             return;
         }
 
         _btnSingup.setEnabled(false);
-        final ProgressDialog progressDialog = new ProgressDialog(SingupActivity.this,R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(SingupActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creando Cuenta...");
         progressDialog.show();
@@ -89,16 +86,15 @@ public class SingupActivity extends AppCompatActivity {
         String rePass = _txtReEnterPass.getText().toString();
 
 
-
         final DatabaseAccess databaseAccess = new DatabaseAccess(this);
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         databaseAccess.open();
-                        if(findUser(user)!=null){
+                        if (findUser(user) != null) {
                             onSingupFailed();
-                        }else {
-                            databaseAccess.addUser(new User(null,name,user,generateMD5(pass),""));
+                        } else {
+                            databaseAccess.addUser(new User(null, name, user, generateMD5(pass), 0));
                             users.removeAll(users);
                             loadUsers();
                             onSingupSuccess();
@@ -106,17 +102,15 @@ public class SingupActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
-
-
-
-
     }
-    public void onSingupSuccess(){
+
+    public void onSingupSuccess() {
         _btnSingup.setEnabled(true);
-        setResult(RESULT_OK,null);
+        setResult(RESULT_OK, null);
         this.finish();
     }
-    public void onSingupFailed(){
+
+    public void onSingupFailed() {
         Toast.makeText(getBaseContext(), "Error al crear Cuenta", Toast.LENGTH_LONG).show();
         _btnSingup.setEnabled(true);
     }
@@ -126,7 +120,7 @@ public class SingupActivity extends AppCompatActivity {
         this.finish();
     }
 
-    public boolean validate(){
+    public boolean validate() {
         boolean valid = true;
 
         String name = _txtName.getText().toString();
@@ -134,35 +128,35 @@ public class SingupActivity extends AppCompatActivity {
         String pass = _txtPass.getText().toString();
         String rePass = _txtReEnterPass.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3){
+        if (name.isEmpty() || name.length() < 3) {
             _txtName.setError("Minimo 3 caracteres");
             valid = false;
-        }else{
+        } else {
             _txtName.setError(null);
         }
 
-        if (user.isEmpty() || user.length() <3){
+        if (user.isEmpty() || user.length() < 3) {
             _txtUser.setError("Minimo 3 caracteres");
-        }else{
+        } else {
             _txtUser.setError(null);
         }
 
-        if (pass.isEmpty() || pass.length()  < 4 || pass.length() > 10){
+        if (pass.isEmpty() || pass.length() < 4 || pass.length() > 10) {
             _txtPass.setError("Contraseña invalida");
             valid = false;
-        }else{
+        } else {
             _txtPass.setError(null);
         }
-        if (rePass.isEmpty() || rePass.length()  < 4 || rePass.length() > 10){
+        if (rePass.isEmpty() || rePass.length() < 4 || rePass.length() > 10) {
             _txtReEnterPass.setError("Contraseña invalida");
             valid = false;
-        }else{
+        } else {
             _txtReEnterPass.setError(null);
         }
 
-        if (!pass.equals(rePass)){
+        if (!pass.equals(rePass)) {
             valid = false;
-            Toast.makeText(getBaseContext(),"Las contraseñas no coiniciden",Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Las contraseñas no coiniciden", Toast.LENGTH_LONG).show();
         }
 
         return valid;
@@ -176,8 +170,9 @@ public class SingupActivity extends AppCompatActivity {
         users = (ArrayList<User>) databaseAccess.getUsers();
         databaseAccess.close();
     }
-    public User findUser(String nickname){
-        for (User user:users ) {
+
+    public User findUser(String nickname) {
+        for (User user : users) {
             if (user.getNickName().equals(nickname)) {
                 return user;
             }
@@ -186,7 +181,7 @@ public class SingupActivity extends AppCompatActivity {
     }
 
     //md5generate
-    public String generateMD5(String text)  {
+    public String generateMD5(String text) {
         MessageDigest m = null;
         try {
             m = MessageDigest.getInstance("MD5");
@@ -196,11 +191,11 @@ public class SingupActivity extends AppCompatActivity {
         m.reset();
         m.update(text.getBytes());
         byte[] digest = m.digest();
-        BigInteger bigInt = new BigInteger(1,digest);
+        BigInteger bigInt = new BigInteger(1, digest);
         String hashtext = bigInt.toString(16);
 
-        while(hashtext.length() < 32 ){
-            hashtext = "0"+hashtext;
+        while (hashtext.length() < 32) {
+            hashtext = "0" + hashtext;
         }
         return hashtext;
     }
