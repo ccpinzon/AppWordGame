@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -27,7 +28,8 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".SingupActivity" />
-        <activity android:name=".GameActivity" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".DificultActivity"></activity>
     </application>
 

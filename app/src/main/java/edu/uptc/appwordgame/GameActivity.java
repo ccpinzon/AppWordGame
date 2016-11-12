@@ -1,5 +1,7 @@
 package edu.uptc.appwordgame;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,7 +59,7 @@ public class GameActivity extends AppCompatActivity {
         _btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char0);
+                juego.add(char0.toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn0.setEnabled(false);
             }
@@ -66,7 +68,7 @@ public class GameActivity extends AppCompatActivity {
         _btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char1);
+                juego.add(char1.toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn1.setEnabled(false);
             }
@@ -75,7 +77,7 @@ public class GameActivity extends AppCompatActivity {
         _btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char2);
+                juego.add(char2.toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn2.setEnabled(false);
             }
@@ -84,24 +86,36 @@ public class GameActivity extends AppCompatActivity {
         _btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char3);
+                juego.add(char3.toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn3.setEnabled(false);
             }
         });
 
 
+        Vibrator v = (Vibrator) this.getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+
 
         _btnFine = (ImageButton) findViewById(R.id.btnFine);
         _btnFine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String word = cutSpaces(_labelLetras.getText().toString());
+                String word = cutSpaces(_labelLetras.getText().toString().toLowerCase());
                 if (wordExists(word)){
                     Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_SHORT).show();
+                    _labelLetras.setText("");
                 }else{
                     Toast.makeText(getBaseContext(), "No existe!", Toast.LENGTH_SHORT).show();
+                    v.vibrate(500);
+                    _labelLetras.setText("");
                 }
+                _labelLetras.setText("");
+                juego.removeAll(juego);
+
+                _btn0.setEnabled(true);
+                _btn1.setEnabled(true);
+                _btn2.setEnabled(true);
+                _btn3.setEnabled(true);
             }
         });
 
