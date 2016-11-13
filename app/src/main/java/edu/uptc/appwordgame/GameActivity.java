@@ -1,6 +1,7 @@
 package edu.uptc.appwordgame;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,7 +66,8 @@ public class GameActivity extends AppCompatActivity {
                         _textViewTimer.setText(""+count);
                         count--;
                         if (count == 0){
-                            // TODO: CREATE ACTIVITY SCORES
+                            Intent intent = new Intent(getApplicationContext(),ScoreActivity.class);
+                            startActivity(intent);
                             saveScore(loggedUser);
                             finish();
                         }

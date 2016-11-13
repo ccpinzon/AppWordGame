@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button _btnLogin;
     private Button _btnSingUp;
+    private Button _btnShowScores;
 
 
     @Override
@@ -33,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        Intent intent = new Intent(this,LoginActivity.class);
 //        startActivity(intent);
-
-        //this.listView = (ListView) findViewById(R.id.listView);
+      //  this.listView = (ListView) findViewById(R.id.scoresListView);
 
         //cargar usuarios al arreglo
         //loadUsers();
@@ -59,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentSingUp = new Intent(getApplicationContext(), SingupActivity.class);
                 startActivity(intentSingUp);
+            }
+        });
+
+        _btnShowScores = (Button)  findViewById(R.id.btn_ShowScores);
+        _btnShowScores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentScores =  new Intent(getApplicationContext(),ScoreActivity.class);
+                startActivity(intentScores);
             }
         });
 
