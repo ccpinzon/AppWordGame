@@ -14,7 +14,10 @@ import android.widget.Toast;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import edu.uptc.appwordgame.Logic.User;
 import edu.uptc.appwordgame.Persistence.DatabaseAccess;
 
 public class GameActivity extends AppCompatActivity {
@@ -31,13 +34,57 @@ public class GameActivity extends AppCompatActivity {
     private int score = 0;
     private TextView _textViewUser;
     private TextView _textViewScore;
+    private TextView _textViewTimer;
+    private int count = 30;
+
+    private ArrayList<User> users;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLoggedUser();
         loadWords();
+        loadUsers();
         setContentView(R.layout.activity_game);
         beginComponents();
+        createTimer();
+    }
+
+    private void createTimer() {
+
+        Timer T=new Timer();
+        T.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        _textViewTimer.setText(""+count);
+                        count--;
+                        if (count == 0){
+                            // TODO: CREATE ACTIVITY SCORES
+                            saveScore(loggedUser);
+                            finish();
+                        }
+                    }
+                });
+            }
+        }, 1000, 1000);
+
+
+    }
+
+    private void saveScore(String user) {
+        DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        databaseAccess.open();
+        User us = findUser(user);
+        if (us.getScore()<=score) {
+            databaseAccess.addScore(findUser(user), score);
+        }
+        databaseAccess.close();
     }
 
     private void getLoggedUser() {
@@ -59,6 +106,7 @@ public class GameActivity extends AppCompatActivity {
         _textViewUser.setText(loggedUser);
 
         _textViewScore = (TextView) findViewById(R.id.text_lvlEasyScore);
+        _textViewTimer = (TextView) findViewById(R.id.text_lvlEasyTimer);
 
         //palabra aleatoria
         String word = randomWordBd(4);
@@ -217,5 +265,22 @@ public class GameActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+
+    private void loadUsers() {
+        DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        databaseAccess.open();
+        users = (ArrayList<User>) databaseAccess.getUsers();
+        databaseAccess.close();
+    }
+
+    public User findUser(String nickname){
+        for (User user:users ) {
+            if (user.getNickName().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

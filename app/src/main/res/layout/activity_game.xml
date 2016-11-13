@@ -10,6 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uptc.appwordgame.GameActivity">
     <TextView
+        android:id="@+id/text_lvlEasyTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -98,9 +98,11 @@ public class DatabaseAccess {
 
     public void addScore(User user, int score){
         if (user!=null){
+            String filter = "nickname="+"'"+user.getNickName()+"'";
             ContentValues values = new ContentValues();
-            values.put("score",user.getName());
-            database.update("USER",values,"score="+score,null);
+            values.put("score", score);
+            database.update("USER",values,filter,null);
+
         }
         else {
             Log.d(TAG,"Error al agregar la puntuacion");
