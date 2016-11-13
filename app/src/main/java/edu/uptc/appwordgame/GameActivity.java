@@ -27,13 +27,24 @@ public class GameActivity extends AppCompatActivity {
     private Button _btn2;
     private Button _btn3;
     private TextView _labelLetras;
-
+    private String loggedUser;
+    private int score = 0;
+    private TextView _textViewUser;
+    private TextView _textViewScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getLoggedUser();
         loadWords();
         setContentView(R.layout.activity_game);
         beginComponents();
+    }
+
+    private void getLoggedUser() {
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            loggedUser = extras.getString("user");
+        }
     }
 
     private void beginComponents() {
@@ -43,6 +54,11 @@ public class GameActivity extends AppCompatActivity {
         _btn2 = (Button) findViewById(R.id.btn2_lvlEasy);
         _btn3 = (Button) findViewById(R.id.btn3_lvlEasy);
         _labelLetras = (TextView) findViewById(R.id.labelLetras);
+
+        _textViewUser = (TextView) findViewById(R.id.text_lvlEasyUser);
+        _textViewUser.setText(loggedUser);
+
+        _textViewScore = (TextView) findViewById(R.id.text_lvlEasyScore);
 
         //palabra aleatoria
         String word = randomWordBd(4);
@@ -102,13 +118,13 @@ public class GameActivity extends AppCompatActivity {
                 String word = cutSpaces(_labelLetras.getText().toString().toLowerCase());
                 if (wordExists(word) && (!wordExistsCurrentPlay(word))) {
                     currentPlayWords.add(word);
+                    score = score + calculateScore(word);
                     Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_SHORT).show();
                     _labelLetras.setText("");
                 } else if (wordExistsCurrentPlay(word)){
                     Toast.makeText(getBaseContext(), "Ya agregada", Toast.LENGTH_SHORT).show();
                     long[] pattern = { 100, 100,100, 100, 100};
                     v.vibrate(pattern , -1);
-
                     _labelLetras.setText("");
                 }
                 else {
@@ -119,6 +135,7 @@ public class GameActivity extends AppCompatActivity {
                 _labelLetras.setText("");
                 juego.removeAll(juego);
                 enableButtons(true);
+                _textViewScore.setText(String.valueOf(score));
             }
         });
 
@@ -131,6 +148,11 @@ public class GameActivity extends AppCompatActivity {
                 enableButtons(true);
             }
         });
+    }
+
+    public int calculateScore(String word){
+        int len = word.length();
+        return len*3;
     }
 
 

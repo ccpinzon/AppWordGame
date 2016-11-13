@@ -103,12 +103,8 @@ public class LoginActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                       // onLoginSuccess();
-                        // onLoginFailed();
-
                         if (findUser(user)!=null &&  findUser(user).getPassword().equals(generateMD5(pass))) {
-                            Toast.makeText(getBaseContext(),"Usuario y contraseña correctos",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(),"Usuario y contraseña correctos",Toast.LENGTH_SHORT).show();
 
                             onLoginSuccess();
                         }else {
@@ -157,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setEnabled(true);
         // TODO: LLEVA A LA ACTIVITY DEL JUEGO
         Intent intent = new Intent(getApplicationContext(),DificultActivity.class);
+        intent.putExtra("user",txtUser.getText().toString());
         startActivity(intent);
         finish();
     }

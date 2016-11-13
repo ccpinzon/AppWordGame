@@ -95,4 +95,15 @@ public class DatabaseAccess {
             Log.d(TAG,"Error al agregar usuario");
         }
     }
+
+    public void addScore(User user, int score){
+        if (user!=null){
+            ContentValues values = new ContentValues();
+            values.put("score",user.getName());
+            database.update("USER",values,"score="+score,null);
+        }
+        else {
+            Log.d(TAG,"Error al agregar la puntuacion");
+        }
+    }
 }
