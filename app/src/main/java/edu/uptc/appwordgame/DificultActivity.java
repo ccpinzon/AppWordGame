@@ -47,6 +47,14 @@ public class DificultActivity extends AppCompatActivity {
 
         //lvl medium
         _btnLvlMedium = (Button) findViewById(R.id.btn_lvlMedium);
+        _btnLvlMedium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),GameMediumActivity.class);
+                intent.putExtra("user",loggedUser);
+                startActivity(intent);
+            }
+        });
         _btnLvlHard = (Button) findViewById(R.id.btn_lvlHard);
     }
 }

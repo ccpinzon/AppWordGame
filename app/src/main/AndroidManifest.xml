@@ -32,7 +32,8 @@
             android:name=".GameActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".DificultActivity" />
-        <activity android:name=".ScoreActivity"></activity>
+        <activity android:name=".ScoreActivity" />
+        <activity android:name=".GameMediumActivity"></activity>
     </application>
 
 </manifest>
