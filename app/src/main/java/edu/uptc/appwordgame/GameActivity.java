@@ -2,6 +2,7 @@ package edu.uptc.appwordgame;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +55,11 @@ public class GameActivity extends AppCompatActivity {
 
     private void createTimer() {
 
+        final MediaPlayer mp = MediaPlayer.create(this,R.raw.click);
+        final MediaPlayer mp2 = MediaPlayer.create(this,R.raw.click);
+        final MediaPlayer mp3 = MediaPlayer.create(this,R.raw.click);
+
+
         Timer T=new Timer();
         T.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -63,12 +69,24 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run()
                     {
+
                         _textViewTimer.setText(""+count);
                         count--;
+                        mp.start();
+                        if (count <=5){
+                            mp2.start();
+                            if (count <=3 )
+                                mp3.start();
+                        }
                         if (count == 0){
                             Intent intent = new Intent(getApplicationContext(),ScoreActivity.class);
                             startActivity(intent);
                             saveScore(loggedUser);
+                            mp.stop();
+                            mp2.stop();
+                            mp3.stop();
+                            finish();
+                        } else if(count == -1){
                             finish();
                         }
                     }
@@ -94,6 +112,12 @@ public class GameActivity extends AppCompatActivity {
         if (extras!=null){
             loggedUser = extras.getString("user");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        count = -1;
     }
 
     private void beginComponents() {
