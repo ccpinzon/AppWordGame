@@ -1,11 +1,14 @@
 package edu.uptc.appwordgame;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,8 +23,11 @@ public class ScoreActivity extends AppCompatActivity {
     public static final String TAG = "SCORES";
     private ArrayList<User> users;
     private ArrayList<String> scores;
+    private Button _btnTryagain;
+    private String comesMain = "0";
 
     private ListView _ListScores;
+    private String loggedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,8 @@ public class ScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score);
         scores = new ArrayList<>();
         loadScores();
+        getLoggedUser();
+        //Toast.makeText(getBaseContext(), "Usuario : " + loggedUser, Toast.LENGTH_SHORT).show();
         beginComponents();
     }
 
@@ -40,7 +48,38 @@ public class ScoreActivity extends AppCompatActivity {
         }
        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,scores);
         _ListScores.setAdapter(adapter);
+
+        getDataMain();
+        _btnTryagain = (Button) findViewById(R.id.btnTryAgain);
+        if (comesMain.equals("1")){
+            _btnTryagain.setVisibility(View.GONE);
+        }else if (comesMain.equals("0")){
+            _btnTryagain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intentLvls = new Intent(getApplicationContext(), DificultActivity.class);
+                    intentLvls.putExtra("user",loggedUser);
+                    startActivity(intentLvls);
+                }
+            });
+        }
     }
+
+
+    public void getDataMain(){
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            comesMain = extras.getString("comesMain");
+        }
+    }
+
+    private void getLoggedUser() {
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            loggedUser = extras.getString("user");
+        }
+    }
+
 
     private void loadScores() {
         DatabaseAccess databaseAccess = new DatabaseAccess(this);

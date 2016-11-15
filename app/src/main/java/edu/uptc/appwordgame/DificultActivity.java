@@ -13,6 +13,11 @@ public class DificultActivity extends AppCompatActivity {
     private Button _btnLvlHard;
     private String loggedUser;
 
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

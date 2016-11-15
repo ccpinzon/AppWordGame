@@ -14,14 +14,14 @@
     <ImageView
         android:src="@drawable/logo2"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_gravity="center_horizontal"/>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.23" />
+        android:layout_weight="0.4" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_MainLogin"
@@ -32,10 +32,6 @@
         android:padding="12dp"
         android:text="Iniciar Sesion"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.10" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_MainSingUp"

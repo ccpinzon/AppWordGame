@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intentScores =  new Intent(getApplicationContext(),ScoreActivity.class);
+                intentScores.putExtra("comesMain","1");
                 startActivity(intentScores);
             }
         });

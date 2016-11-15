@@ -23,6 +23,7 @@ import edu.uptc.appwordgame.Logic.User;
 import edu.uptc.appwordgame.Persistence.DatabaseAccess;
 
 public class GameActivity extends AppCompatActivity {
+
     private ArrayList<String> words;
     private ArrayList<String> currentPlayWords;
     private ImageButton _btnFine;
@@ -46,11 +47,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLoggedUser();
+
         loadWords();
         loadUsers();
         setContentView(R.layout.activity_game);
         beginComponents();
         createTimer();
+
     }
 
     private void createTimer() {
@@ -78,16 +81,17 @@ public class GameActivity extends AppCompatActivity {
                             if (count <=3 )
                                 mp3.start();
                         }
-                        if (count == 0){
+                        if (count < 0){
                             Intent intent = new Intent(getApplicationContext(),ScoreActivity.class);
+                            intent.putExtra("comesMain","0");
+                            intent.putExtra("user",loggedUser);
                             startActivity(intent);
                             saveScore(loggedUser);
                             mp.stop();
                             mp2.stop();
                             mp3.stop();
                             finish();
-                        } else if(count == -1){
-                            finish();
+                            T.cancel();
                         }
                     }
                 });
@@ -116,8 +120,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        count = -1;
+        count = 0;
     }
 
     private void beginComponents() {
