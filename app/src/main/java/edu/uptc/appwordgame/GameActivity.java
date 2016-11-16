@@ -229,7 +229,7 @@ public class GameActivity extends AppCompatActivity {
 
     public int calculateScore(String word){
         int len = word.length();
-        return len*3;
+        return len*75;
     }
 
 
