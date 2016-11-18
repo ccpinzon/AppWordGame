@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.uptc.appwordgame.GameActivity">
+    <TextView
+        android:id="@+id/text_lvlHardTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:textColor="@color/accent"
+        android:text="30"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/text_lvlHardUser"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:textSize="20dp"
+            android:text="USER"/>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Score:"/>
+        <TextView
+            android:id="@+id/text_lvlHardScore"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:text="99999"/>
+
+    </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/logo2" />
+
+    <TextView
+        android:id="@+id/labelLetrasHard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="20dp"
+        android:textAlignment="center"
+        android:textSize="50dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn0_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:text="A"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:id="@+id/btn1_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="B"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:id="@+id/btn2_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="C"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg" />
+        <Button
+            android:id="@+id/btn3_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="C"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn4_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:text="A"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:id="@+id/btn5_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="B"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg"/>
+        <Button
+            android:id="@+id/btn6_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="C"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg" />
+        <Button
+            android:id="@+id/btn7_lvlHard"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="C"
+            android:textSize="40dp"
+            android:background="@drawable/my_button_bg" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnErrorHard"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/error" />
+
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnFineHard"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitStart"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ok" />
+
+    </LinearLayout>
+</LinearLayout>
