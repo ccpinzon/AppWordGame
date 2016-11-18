@@ -1,5 +1,9 @@
 package edu.uptc.appwordgame;
 
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,9 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.uptc.appwordgame.Logic.User;
 import edu.uptc.appwordgame.Persistence.DatabaseAccess;
@@ -46,6 +53,58 @@ public class GameHardActivity extends AppCompatActivity {
         loadUsers();
         setContentView(R.layout.activity_game_hard);
         beginComponents();
+        createTimer();
+    }
+
+    private void createTimer() {
+        final MediaPlayer mp = MediaPlayer.create(this,R.raw.click);
+        final MediaPlayer mp2 = MediaPlayer.create(this,R.raw.click);
+        final MediaPlayer mp3 = MediaPlayer.create(this,R.raw.click);
+
+
+        Timer T=new Timer();
+        T.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+
+                        _textViewTimer.setText(""+count);
+                        count--;
+                        mp.start();
+                        if (count <=5){
+                            mp2.start();
+                            if (count <=3 )
+                                mp3.start();
+                        }
+                        if (count < 0){
+                            Intent intent = new Intent(getApplicationContext(),ScoreActivity.class);
+                            intent.putExtra("comesMain","0");
+                            intent.putExtra("user",loggedUser);
+                            startActivity(intent);
+                            saveScore(loggedUser);
+                            mp.stop();
+                            mp2.stop();
+                            mp3.stop();
+                            finish();
+                            T.cancel();
+                        }
+                    }
+                });
+            }
+        }, 1000, 1000);
+    }
+    private void saveScore(String user) {
+        DatabaseAccess databaseAccess = new DatabaseAccess(this);
+        databaseAccess.open();
+        User us = findUser(user);
+        if (us.getScore()<=score) {
+            databaseAccess.addScore(findUser(user), score);
+        }
+        databaseAccess.close();
     }
 
     private void beginComponents() {
@@ -154,13 +213,91 @@ public class GameHardActivity extends AppCompatActivity {
         _btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char0.toUpperCase());
+                juego.add(char7.toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn7.setEnabled(false);
             }
         });
+
+        Vibrator v = (Vibrator) this.getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+        currentPlayWords = new ArrayList<String>();
+        _btnFine = (ImageButton) findViewById(R.id.btnFineHard);
+        _btnFine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String word = cutSpaces(_labelLetras.getText().toString().toLowerCase());
+                if (wordExists(word) && (!wordExistsCurrentPlay(word))){
+                    currentPlayWords.add(word);
+                    score = score + calculateScore(word);
+                    Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_SHORT).show();
+                }else if (wordExistsCurrentPlay(word)){
+                    Toast.makeText(getBaseContext(), "Ya agregada", Toast.LENGTH_SHORT).show();
+                    long[] pattern = { 100, 100,100, 100, 100};
+                    v.vibrate(pattern , -1);
+                }else{
+                    Toast.makeText(getBaseContext(), "No existe!", Toast.LENGTH_SHORT).show();
+                    v.vibrate(500);
+                }
+                _labelLetras.setText("");
+                juego.removeAll(juego);
+                enableButtons(true);
+                _textViewScore.setText(String.valueOf(score));
+            }
+        });
+
+        _btnError = (ImageButton) findViewById(R.id.btnErrorHard);
+        _btnError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                juego.removeAll(juego);
+                _labelLetras.setText("");
+                enableButtons(true);
+            }
+        });
+
     }
 
+    private void enableButtons(boolean aBoolean) {
+        _btn0.setEnabled(aBoolean);
+        _btn1.setEnabled(aBoolean);
+        _btn2.setEnabled(aBoolean);
+        _btn3.setEnabled(aBoolean);
+        _btn4.setEnabled(aBoolean);
+        _btn5.setEnabled(aBoolean);
+        _btn6.setEnabled(aBoolean);
+        _btn7.setEnabled(aBoolean);
+    }
+
+    public int calculateScore(String word){
+        int len = word.length();
+        return len*75;
+    }
+
+    public boolean wordExists(String wordSearch) {
+        for (String word : words) {
+            if (wordSearch.equals(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean wordExistsCurrentPlay(String wordSearch) {
+        for (String word : currentPlayWords) {
+            if (wordSearch.equals(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String cutSpaces(String word) {
+        String[] letters = word.split(" ");
+        String out = "";
+        for (String letter : letters) {
+            out = out + letter;
+        }
+        return out;
+    }
     private String randmonWord(int len) {
         ArrayList<String> wordsCuts = new ArrayList<>();
         String randmonWord = "";
@@ -188,6 +325,10 @@ public class GameHardActivity extends AppCompatActivity {
         users = (ArrayList<User>) databaseAccess.getUsers();
         databaseAccess.close();
     }
+    @Override
+    public void onBackPressed() {
+        count = 0;
+    }
 
     private void loadWords() {
         DatabaseAccess databaseAccess = new DatabaseAccess(this);
@@ -203,5 +344,13 @@ public class GameHardActivity extends AppCompatActivity {
         }
     }
 
+    public User findUser(String nickname){
+        for (User user:users ) {
+            if (user.getNickName().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
+    }
 
 }
