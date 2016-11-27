@@ -43,6 +43,8 @@ public class GameMediumActivity extends AppCompatActivity {
 
     private ArrayList<User> users;
 
+    int contChangeWords = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,70 +136,54 @@ public class GameMediumActivity extends AppCompatActivity {
         _textViewScore = (TextView) findViewById(R.id.text_lvlMediumScore);
         _textViewTimer = (TextView) findViewById(R.id.text_lvlMediumTimer);
 
-        String word = randomWordBd(6);
-        Log.d("RANDOM_WORD", word);
-
-        String char0 = word.substring(4, 5);
-        String char1 = word.substring(3, 4);
-        String char2 = word.substring(5, 6);
-        String char3 = word.substring(1, 2);
-        String char4 = word.substring(0, 1);
-        String char5 = word.substring(2, 3);
-
-
-
 
         ArrayList<String> juego = new ArrayList<>();
-        _btn0.setText(char0);
+
+        changeWord();
         _btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char0.toUpperCase());
+                juego.add(_btn0.getText().toString().toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn0.setEnabled(false);
             }
         });
-        _btn1.setText(char1);
         _btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char1.toUpperCase());
+                juego.add(_btn1.getText().toString().toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn1.setEnabled(false);
             }
         });
-        _btn2.setText(char2);
         _btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char2.toUpperCase());
+                juego.add(_btn2.getText().toString().toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn2.setEnabled(false);
             }
         });
-        _btn3.setText(char3);
         _btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char3.toUpperCase());
+                juego.add(_btn3.getText().toString().toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn3.setEnabled(false);
             }
         });
-        _btn4.setText(char4);
         _btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char4.toUpperCase());
+                juego.add(_btn4.getText().toString().toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn4.setEnabled(false);
             }
         });
-        _btn5.setText(char5);
         _btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                juego.add(char5.toUpperCase());
+                juego.add(_btn5.getText().toString().toUpperCase());
                 _labelLetras.setText(arrayToString(juego));
                 _btn5.setEnabled(false);
             }
@@ -215,6 +201,13 @@ public class GameMediumActivity extends AppCompatActivity {
                     currentPlayWords.add(word);
                     score = score+calculateScore(word);
                     Toast.makeText(getBaseContext(), "Existe!", Toast.LENGTH_SHORT).show();
+                    if (word.length()>=4)
+                        contChangeWords = contChangeWords +1;
+                    if (contChangeWords>=2){
+                        changeWord();
+                        count = count + 8 ;
+                        contChangeWords = 0;
+                    }
                 }else if (wordExistsCurrentPlay(word)){
                     Toast.makeText(getBaseContext(), "Ya agregada", Toast.LENGTH_SHORT).show();
                     long[] pattern = { 100, 100,100, 100, 100};
@@ -239,6 +232,26 @@ public class GameMediumActivity extends AppCompatActivity {
                 enableButtons(true);
             }
         });
+    }
+
+    private void changeWord() {
+        String word = randomWordBd(6);
+        Log.d("RANDOM_WORD", word);
+
+        String char0 = word.substring(4, 5);
+        String char1 = word.substring(3, 4);
+        String char2 = word.substring(5, 6);
+        String char3 = word.substring(1, 2);
+        String char4 = word.substring(0, 1);
+        String char5 = word.substring(2, 3);
+
+        _btn0.setText(char0);
+        _btn1.setText(char1);
+        _btn2.setText(char2);
+        _btn3.setText(char3);
+        _btn4.setText(char4);
+        _btn5.setText(char5);
+
     }
 
     public void enableButtons(Boolean aBoolean) {
